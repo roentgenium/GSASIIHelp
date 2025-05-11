@@ -1,1 +1,24 @@
-site_name: My Docs
+site_name: GSAS-II Help
+
+theme:
+  name: material
+
+plugins:
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: ja
+          name: 日本語
+          build: true
+
+markdown_extensions:
+  - def_list
+  - admonition
+  - mdx_math
+
+extra_javascript: 
+  - http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML

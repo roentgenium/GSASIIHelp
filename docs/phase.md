@@ -152,7 +152,7 @@ For single crystal data, the only parameters are scale, extinction and disordere
 * **Crystallite size peak broadening** – This is computed from size factor(s) in microns (μm = 10-6 m), with the Scherrer constant assumed as unity. Sizes can be computed in three ways: isotropic, uniaxial and ellipsoidal. In isotropic broadening, crystallites are assumed to average as uniform in all directions and a single size value is supplied; with uniaxial broadening, a preferred direction (as a crystallographic axis, such as 0,0,1 is supplied) -- note that for most crystal systems only one axis makes sense -- and two size parameters are defined, one for along the axis and one for in the perpendicular plane; with ellipsoidal, six terms are used to define a broadening tensor that has arbitrary orientation -- this model may require constraints and is seldom needed. Note that size broadening is usually Lorentzian, which corresponds to a LGmix value of 1.0; if this value is between 0. and 1., both Gaussian and Lorentz size broadening is modeled and a value of 0.0 is pure Gaussian. Values less than 0. or greater than 1. make no physical sense. Typical sensitivity is to no more than 4 μm; beyond that the particles are effectively infinite for a diffraction experiment.
 * **Microstrain peak broadening**  - This is computed as unitless fraction of Δd/d (or equivalently ΔQ/Q) times 106. Microstrain can be represented in three ways: isotropic, uniaxial and generalized. In isotropic broadening, microstrain broadening assumed to be the same in all crystallographic directions and a single value is supplied; with uniaxial broadening, a preferred direction (as a crystallographic axis, such as 0,0,1) is supplied -- note that for most crystal systems only one axis makes sense -- and two microstrain parameters are defined, one for along the axis and one for in the perpendicular plane; with generalized, the Nicole Popa/Peter Stephens second-order expansion model is used and the number of terms will depend on the crystal system. It is typically possible to refine all terms when significant anisotropic strain broadening is present. Note that microstrain broadening is usually Lorentzian, which corresponds to a LGmix value of 1.0; if this value is between 0. and 1., both Gaussian and Lorentz broadening is modeled and a value of 0.0 is pure Gaussian. Values less than 0. or greater than 1. make no physical sense. Typical microstrain is ~1000.
 * **Hydrostatic/elastic strain** – This shifts the lattice constants for the contribution of a phase into a histogram. The values are added to the reciprocal lattice parameter tensor terms. They must be refined in sequential refinements or where the lattice constants are slightly different in different histograms (as an example see the Combined X-ray/CW-neutron refinement of PbSO4 tutorial.
-* **Preferred Orientation** – Preferred orientation (texture) can be treated in one of two different sections of GSAS-II depending on what is desired. The Preferred Orientation correction here in the Phase/Data tab applies a cylindrical specimen symmetry intensity correction to the current phase and a single histogram. The second option is found in the "Texture" tab for the Phase. This allows different choices for the specimen symmetry, based on its processing history. (The cylindrical symmetry option uses the same model as in the Preferred Orientation correction.) However, with the Texture tab, the single set of spherical harmonics terms will be applied to all histograms where the current phase appears. Note that multiple sample orientations or detector settings are usually needed to determine texture with symmetry lower than cylindrical. Typically, the Preferred Orientation correction here is used for crystallographic studies, where intensity corrections are desired to repair for undesired texture in the sample, while the Texture tab is used for studies where the goal is to characterize preferred orientation in a sample. Note that both the Preferred Orientation and Texture corrections should not be used at the same time.
+* <a id="preferred_orientation"></a>**Preferred Orientation** – Preferred orientation (texture) can be treated in one of two different sections of GSAS-II depending on what is desired. The Preferred Orientation correction here in the Phase/Data tab applies a cylindrical specimen symmetry intensity correction to the current phase and a single histogram. The second option is found in the "Texture" tab for the Phase. This allows different choices for the specimen symmetry, based on its processing history. (The cylindrical symmetry option uses the same model as in the Preferred Orientation correction.) However, with the Texture tab, the single set of spherical harmonics terms will be applied to all histograms where the current phase appears. Note that multiple sample orientations or detector settings are usually needed to determine texture with symmetry lower than cylindrical. Typically, the Preferred Orientation correction here is used for crystallographic studies, where intensity corrections are desired to repair for undesired texture in the sample, while the Texture tab is used for studies where the goal is to characterize preferred orientation in a sample. Note that both the Preferred Orientation and Texture corrections should not be used at the same time.
 
     Within the Phase/Data Preferred Orientation intensity correction option there is a choice of two texture models. The simpler model is that of **March-Dollase**, which requires a definition of a unique axis (as a reciprocal space vector) and then a single ratio can be refined, which specifies the relative amount of excess or depleted crystallites in that direction. Note that there is only one choice for the unique axis for many crystal systems, such as 001 for hexagonal and tetragonal. The **Spherical Harmonics model** allows for a more complex probability surface (which is always constrained to match the symmetry of the crystal system and assumes a cylindrical symmetry sample.) An order parameter term is available which dictates how many terms are introduced into the model and thus the complexity of the probability surface. Note that use of this model requires that the correct value is used for Sample parameters/Goniometer chi setting: 90.0 for Debye-Scherrer or 0.0 for Bragg-Brentano.
 
@@ -355,7 +355,7 @@ Actions to reposition the rigid body in either mode are:
 
 ## Texture
 
-This tab is used to control settings used for a texture study of a material. This type of characterization usually requires diffraction data recorded with multiple detector orientations (the number of orientations will depend on sample and material symmetry). Do not confuse this with applying a preferred orientation correction (found in the "Data" tab) in a structural study. The sample orientation relative to the detector axes is specified here and the detector orientation is specified for each histogram as goniometer omega, chi, phi and azimuth values (details below). These values must be specified.
+This tab is used to control settings used for a texture study of a material. This type of characterization usually requires diffraction data recorded with multiple detector orientations (the number of orientations will depend on sample and material symmetry). Do not confuse this with applying a [preferred orientation correction](./phase.md#preferred_orientation) (found in the ["Data" tab](#data)) in a structural study. The sample orientation relative to the detector axes is specified here and the detector orientation is specified for each histogram as goniometer omega, chi, phi and azimuth values (details below). These values must be specified.
 
 Texture analysis using GSAS-II employs spherical harmonics modeling, as described by Bunge, "Texture Analysis in Materials Science" (1982), and implemented by Von Dreele, J. Appl. Cryst., 30, 517-525 (1997) in GSAS. The even part of the orientation distribution function (ODF) via the general axis equatio
 
@@ -363,7 +363,7 @@ $$
 A(x,y) = 1 + \sum_{L=2}^{N_L}{\frac{4\pi}{2L+1}} \sum_{m=-L}^{L} \sum_{n=-L}^{L} C_L^{mn} k_L^m(y) k_L^n(h)
 $$
 
-is used to give the intensity corrections due to texture. The two harmonic terms, \(k_L^m(y)\) and , take on values according to the sample and crystal symmetries, respectively, and thus the two inner summations are over only the resulting unique, nonzero harmonic terms. These unique terms are automatically selected by GSAS-II according to the space group symmetry and the user chosen sample symmetry. The available sample symmetries are cylindrical, 2/m, mmm and no symmetry. The choice of sample symmetry profoundly affects the selection of harmonic coefficients. For example, in the case of cylindrical sample symmetry (fiber texture) only kL0(y) terms are nonzero so the rest are excluded from the summations and the set of CL0n coefficients is sufficient to describe the effect on the diffraction pattern due to texture. The crystal harmonic factor, , is defined for each reflection, h, via polar and azimuthal coordinates (f, b) of a unit vector coincident with h relative to the reciprocal lattice. For most crystal symmetries, f is the angle between h and the n-th order major rotation axis of the space group (usually the c-axis) and b is the angle between the projections of h and any secondary axis (usually the a-axis) onto the normal plane.  In a similar way the sample harmonic factor, , is defined according to polar and azimuthal coordinates (y, g) of a unit vector coincident with the diffraction vector relative to a coordinate system attached to the external form of the sample. For example, in the case of a rolled steel plate having mmm symmetry, the polar angle, y, is frequently measured from the normal direction (ND, parallel to Ks) and g is then measured from the rolling direction (RD, parallel to Is) in the TD (transverse direction, parallel to Js) - RD plane.  Thus, the general axis equation becomes
+is used to give the intensity corrections due to texture. The two harmonic terms, \(k_L^m(y)\) and \(k_L^n(h)\) , take on values according to the sample and crystal symmetries, respectively, and thus the two inner summations are over only the resulting unique, nonzero harmonic terms. These unique terms are automatically selected by GSAS-II according to the space group symmetry and the user chosen sample symmetry. The available sample symmetries are cylindrical, 2/m, mmm and no symmetry. The choice of sample symmetry profoundly affects the selection of harmonic coefficients. For example, in the case of cylindrical sample symmetry (fiber texture) only \(k_L^0(y)\) terms are nonzero so the rest are excluded from the summations and the set of \(C_L^{0n}\) coefficients is sufficient to describe the effect on the diffraction pattern due to texture. The crystal harmonic factor, \(k_L^n(h)\), is defined for each reflection, h, *via* polar and azimuthal coordinates \((\phi, \beta)\) of a unit vector coincident with h relative to the reciprocal lattice. For most crystal symmetries, \(\phi\) is the angle between h and the n-th order major rotation axis of the space group (usually the c-axis) and \(\beta\) is the angle between the projections of h and any secondary axis (usually the a-axis) onto the normal plane.  In a similar way the sample harmonic factor, \(k_L^m(y)\), is defined according to polar and azimuthal coordinates \((\psi, \gamma)\) of a unit vector coincident with the diffraction vector relative to a coordinate system attached to the external form of the sample. For example, in the case of a rolled steel plate having mmm symmetry, the polar angle, \(\Psi\), is frequently measured from the normal direction (ND, parallel to K<sub>s</sub>) and g is then measured from the rolling direction (RD, parallel to I<sub>s</sub>) in the TD (transverse direction, parallel to J<sub>s</sub>) - RD plane.  Thus, the general axis equation becomes
 
 $$
 A(\phi,\beta,\psi,\gamma) = 1 + \sum_{L=2}^{N_L}{\frac{4\pi}{2L+1}} \sum_{m=-L}^{L} \sum_{n=-L}^{L} C_L^{mn} k_L^m(\psi, \gamma) k_L^n(\phi, \beta)
@@ -371,13 +371,13 @@ $$
 
 Note that this version of the general axis equation differs from that shown in Von Dreele (1997) in that the assignment of m and n are reversed.
 
-In a diffraction experiment the crystal reflection coordinates (f, b) are determined by the choice of reflection index (hkl) while the sample coordinates (y, g) are determined by the sample orientation on the diffractometer. To define the sample coordinates (y, g), we have defined an instrument coordinate system (I, J, K) such that K is normal to the diffraction plane and J is coincident with the direction of the incident radiation beam toward the source. We further define a standard set of right-handed eulerian goniometer angles (W, C, F) so that W and F are rotations about K and C is a rotation about J when W  = 0.  Finally, as the sample may be mounted so that the sample coordinate system (Is, Js, Ks) does not coincide with the instrument coordinate system (I, J, K), we define three eulerian sample rotation offset angles (Ws, Cs, Fs) that describe the rotation from (Is, Js, Ks) to (I, J, K).  The sample rotation angles are defined so that with the goniometer angles at zero Ws and Fs are rotations about K and Cs is a rotation about J.  The zeros of these three sample rotation angles can be refined as part of the Rietveld analysis to accommodate any angular offset in sample mounting. For the specific case of cylindrical sample symmetry, the cylinder axis is coincident with Ks as is the 2-fold in 2/m sample symmetry. After including the diffraction angle, Q, and a detector azimuthal angle, A, the full rotation matrix, M, is
+In a diffraction experiment the crystal reflection coordinates \((\phi, \beta)\) are determined by the choice of reflection index (hkl) while the sample coordinates \((\Psi, \gamma)\) are determined by the sample orientation on the diffractometer. To define the sample coordinates \((\Psi, \gamma)\), we have defined an instrument coordinate system (I, J, K) such that K is normal to the diffraction plane and J is coincident with the direction of the incident radiation beam toward the source. We further define a standard set of right-handed eulerian goniometer angles \((\Omega, X, \Phi)\) so that \(\Omega\) and \(\Phi\) are rotations about K and X is a rotation about J when \(\Omega = 0\). Finally, as the sample may be mounted so that the sample coordinate system (\(I_s, J_s, K_s\)) does not coincide with the instrument coordinate system (I, J, K), we define three eulerian sample rotation offset angles \((\Omega_s, X_s, \Phi_s)\) that describe the rotation from (\(I_s, J_s, K_s\)) to (I, J, K).  The sample rotation angles are defined so that with the goniometer angles at zero \(\Omega_s\) and \(\Phi_s\) are rotations about K and \(X_s\) is a rotation about J.  The zeros of these three sample rotation angles can be refined as part of the Rietveld analysis to accommodate any angular offset in sample mounting. For the specific case of cylindrical sample symmetry, the cylinder axis is coincident with Ks as is the 2-fold in 2/m sample symmetry. After including the diffraction angle, \(\Theta\), and a detector azimuthal angle, A, the full rotation matrix, \(M\), is
 
 $$
 M = - \Theta A \Omega X (\Phi + \Phi_s) X_s \Omega_s
 $$
 
-By transformation of unit Cartesian vectors (100, 010 and 001) with this rotation matrix, the sample orientation coordinates (y, g) are given by
+By transformation of unit Cartesian vectors (100, 010 and 001) with this rotation matrix, the sample orientation coordinates \((\Psi, \gamma)\) are given by
 
 $$
 cos(y) = M \begin{pmatrix}
@@ -385,7 +385,11 @@ cos(y) = M \begin{pmatrix}
 0 \\
 1
 \end{pmatrix}
+$$
+
 and
+
+$$
 tan(\gamma) = M \begin{pmatrix}
 0 \\
 1 \\
@@ -398,7 +402,7 @@ tan(\gamma) = M \begin{pmatrix}
 \end{pmatrix} 
 $$
 
-The harmonic terms,  and , are developed from (those for  are similar)
+The harmonic terms, \(k_L^m(\psi, \gamma)\) and \(k_L^n(\phi, \beta)\), are developed from (those for \(k_L^m(\psi, \gamma)\) are similar)
 
 $$
 k_L^n(\phi, \beta) = \frac{1}{\sqrt{2\pi}} e^{in\beta} \bar{P}_L^n(cos(\phi))
@@ -416,21 +420,21 @@ $$
 \bar{P}_L^{ns}(cos(\phi)) = \sum_{s=0}^L {a'}_L^{ns} sin(s \phi)
 $$
 
-for n odd.  Each sum is only over either the even or odd values of s, respectively, because of the properties of the Fourier coefficients, .  These Fourier coefficients are determined so that the definition
+for n odd.  Each sum is only over either the even or odd values of s, respectively, because of the properties of the Fourier coefficients, \({a'}_{L}^{ns}\). These Fourier coefficients are determined so that the definition
 
 $$
 \bar{P}_L^{n}(cos(\phi)) = \bar{P}_L^{n}(x) = \sqrt{\frac{(L+n)!}{(L-n)!}} \sqrt{\frac{2L+1}{2}} \frac{(-1)^{L-n}}{2^L L!} (1-x^2)^{-n/2} \frac {d^{L-n}}{dx^{L-n}} (1-x^2)^L
 $$
 
-is satisfied.  Terms of the form  and  are combined depending on the symmetry and the value of n (or m) along with appropriate normalization coefficients to give the harmonic terms  and .  For cubic crystal symmetry, the term  is obtained directly from the Fourier expansion
+is satisfied. Terms of the form \( cos(n\beta) \bar{P}_L^n(cos{n\beta})\) and \(sin(n\beta) \bar{P}_L^n(cos{\phi})\) are combined depending on the symmetry and the value of n (or m) along with appropriate normalization coefficients to give the harmonic terms \(k_L^n(\phi,\beta)\) and \(k_L^m(\psi,\gamma)\). For cubic crystal symmetry, the term \(k_L^n(\phi,\beta)\) is obtained directly from the Fourier expansion
 
 $$
 k_L^n(\phi, \beta) = \sum_{j=0}^L B_L^{nj} \bar{P}_L^n (cos{\phi}) cos{n\beta}
 $$
 
-using the coefficients, , as tabulated by Bunge (1982).
+using the coefficients, \(B_L^{nj}\) , as tabulated by Bunge (1982).
 
-The Rietveld refinement of texture then proceeds by constructing derivatives of the profile intensities with respect to the allowed harmonic coefficients, , and the three sample orientation angles, Ws, Cs, Fs, all of which can be adjustable parameters of the refinement. Once the refinement is complete, pole figures for any reflection may be constructed by use of the general axis equation, the refined values for  and the sample orientation angles Ws, Cs, Fs.
+The Rietveld refinement of texture then proceeds by constructing derivatives of the profile intensities with respect to the allowed harmonic coefficients, \(C_L^{mn}\), and the three sample orientation angles, \(\Omega_s, X_s, \Phi_s\) Ws, Cs, Fs, all of which can be adjustable parameters of the refinement. Once the refinement is complete, pole figures for any reflection may be constructed by use of the general axis equation, the refined values for \(C_L^{mn}\) and the sample orientation angles \(\Omega_s, X_s, \Phi_s\).
 
 $$
 J = 1 + \sum_{L=2}^{N_L} \frac{1}{2L+1} \sum_{m=-L}^{L} \sum_{n=-L}^{L} |C_L^{mn}|^2
@@ -438,19 +442,19 @@ $$
 
 The magnitude of the texture is evaluated from the texture index by
 
-If the texture is random then J = 1, otherwise J > 1; for a single crystal J = ¥.
+If the texture is random then J = 1, otherwise J > 1; for a single crystal J = \(\infty\).
 
-In GSAS-II the texture is defined in two ways to accommodate the two possible uses of this correction. In one, a suite of spherical harmonics coefficients is defined for the texture of a phase in the sample; this can have any of the possible sample symmetries and is the usual result desired for texture analysis. The other is the suite of spherical harmonics terms for cylindrical sample symmetry for each phase in each powder pattern ("histogram") and is usually used to accommodate preferred orientation effects in a Rietveld refinement. The former description allows refinement of the sample orientation zeros, Ws, Cs, Fs, but the latter description does not (they are assumed to be zero and not refinable). The sample orientation angles, (W, C, F) are specified in the Sample Parameters table in the GSAS-II data tree structure and are applied for either description.
+In GSAS-II the texture is defined in two ways to accommodate the two possible uses of this correction. In one, a suite of spherical harmonics coefficients is defined for the texture of a phase in the sample; this can have any of the possible sample symmetries and is the usual result desired for texture analysis. The other is the suite of spherical harmonics terms for cylindrical sample symmetry for each phase in each powder pattern ("histogram") and is usually used to accommodate preferred orientation effects in a Rietveld refinement. The former description allows refinement of the sample orientation zeros, \(\Omega_s, X_s, \Phi_s\), but the latter description does not (they are assumed to be zero and not refinable). The sample orientation angles, \(\Omega, X, \Phi\) are specified in the Sample Parameters table in the GSAS-II data tree structure and are applied for either description.
 
 Some useful examples:
 
 **1. Bragg-Brentano laboratory powder diffractometer**
 
-The conventional arrangement of this experiment is to have a flat sample with incident and diffracted beams at equal angles (theta) on opposite sides of the sample. The sample is frequently spun about its normal to improve powder statistics and impose cylindrical symmetry on any preferred orientation (texture). Thus, the diffraction plane (source, diffraction vector & detector) contains the K-vector which is parallel to the diffraction vector and W, C, F = 0.
+The conventional arrangement of this experiment is to have a flat sample with incident and diffracted beams at equal angles (theta) on opposite sides of the sample. The sample is frequently spun about its normal to improve powder statistics and impose cylindrical symmetry on any preferred orientation (texture). Thus, the diffraction plane (source, diffraction vector & detector) contains the K-vector which is parallel to the diffraction vector and \(\Omega, X, \Phi = 0\).
 
 **2. Debye-Scherrer diffractometer with point detector(s)**
 
-The usual arrangement here is to have a capillary sample perpendicular to the diffraction plane. The capillary may be spun about its cylinder axis for powder averaging and to impose cylindrical symmetry on the texture which is perpendicular to the diffraction plane. Thus, W, F = 0 and C =90.
+The usual arrangement here is to have a capillary sample perpendicular to the diffraction plane. The capillary may be spun about its cylinder axis for powder averaging and to impose cylindrical symmetry on the texture which is perpendicular to the diffraction plane. Thus, \(\Omega,\Phi = 0\) and \(X = 90\).
 
 **3. Debye-Scherrer diffractometer with 2D area detector**
 
@@ -474,7 +478,7 @@ The area detector is presumed to be directly behind the sample with the incident
     One can choose the contour (pole & inverse pole figures) color scheme (default "Paired") and make a CSV file of the image for import into other software.
 
     * The spherical harmonics coefficients are shown next; they may be edited. They may be cleared by setting harmonic order to zero and then back to desired value.
-    * The sample orientation angle zeros (Ws, Cs, Fs) are shown with their individual refinement flags.
+    * The sample orientation angle zeros \((\Omega_s, X_s, \Phi_s)\) are shown with their individual refinement flags.
 
 ## Map peaks
 
@@ -586,7 +590,7 @@ For each program, the setup page is similar. There is a block for "metadata" ite
 
 ## fullrmc
 
-The fullrmc program is a large-box pair distribution function modeling library developed by Bachir Aoun [Fullrmc, a Rigid Body Reverse Monte Carlo Modeling Package Enabled with Machine Learning and Artificial Intelligence", B. Aoun, Jour. Comp. Chem. (2016), 37, 1102-1111. DOI: 10.1002/jcc.24304]. Extensive information about fullrmc is found, including a number of explanatory videos, along with older source code on GitHub: https://bachiraoun.github.io/fullrmc/. Note that the GSAS-II implementation is not compatible with the open-source version of fullrmc, but rather the new version 5.0 must be used, which is distributed as a compiled versions for 64-bit Intel-compatible processors running Windows, Linux and MacOS from website https://github.com/bachiraoun/fullrmc/tree/master/standalones. Note that an even newer and more powerful version of fullrmc is available for cloud computing by subscription at https://fullrmc.com. When fullrmc is selected in this tab, GSAS-II use the GSAS-II configuration variable fullrmc_exec, which if defined points to a Python image with fullrmc. Otherwise GSAS-II will look in the following places, in the order specified, for a Python image for a file named fullrmc5*64bit (MacOS or Linux) or fullrmc5*.exe (Windows):
+The fullrmc program is a large-box pair distribution function modeling library developed by Bachir Aoun [Fullrmc, a Rigid Body Reverse Monte Carlo Modeling Package Enabled with Machine Learning and Artificial Intelligence", B. Aoun, Jour. Comp. Chem. (2016), 37, 1102-1111. [DOI: 10.1002/jcc.24304](https://doi.org/10.1002/jcc.24304)]. Extensive information about fullrmc is found, including a number of explanatory videos, along with older source code on GitHub: [https://bachiraoun.github.io/fullrmc/](https://bachiraoun.github.io/fullrmc/). Note that the GSAS-II implementation is not compatible with the open-source version of fullrmc, but rather the new version 5.0 must be used, which is distributed as a compiled versions for 64-bit Intel-compatible processors running Windows, Linux and MacOS from website [https://github.com/bachiraoun/fullrmc/tree/master/standalones](https://github.com/bachiraoun/fullrmc/tree/master/standalones). Note that an even newer and more powerful version of fullrmc is available for cloud computing by subscription at [https://fullrmc.com](https://fullrmc.com). When fullrmc is selected in this tab, GSAS-II use the GSAS-II configuration variable `fullrmc_exec`, which if defined points to a Python image with fullrmc. Otherwise GSAS-II will look in the following places, in the order specified, for a Python image for a file named `fullrmc5*64bit` (MacOS or Linux) or `fullrmc5*.exe` (Windows):
 
 1. The location where GSAS-II is installed,
 2. The location where Python is installed,
@@ -596,7 +600,7 @@ The fullrmc program is a large-box pair distribution function modeling library d
 
 ## ISODISTORT
 
-This displays the setup for using the web-based application, ISODISTORT, to identify the possible mode distortions of a parent structure. To use it you must be connected to the internet. Two ISODISTORT Methods are supported in GSAS-II: Method-1 identifies all possible subgroups that result from simple mode distortions that are associated with a single irreducible representation. Method-4 is more useful in that it finds the mode decomposition of a parent structure to give a specified distorted structure and is set up to find only atom displacement modes. See help pages for ISODISTORT for more information. The ultimate product of using ISODISTORT is a special cif file with constraints describing the mode distortions; this is imported into GSAS-II to form a new phase with these constraints.
+This displays the setup for using the web-based application, [ISODISTORT](https://iso.byu.edu/iso/isodistort.php), to identify the possible mode distortions of a parent structure. To use it you must be connected to the internet. Two ISODISTORT Methods are supported in GSAS-II: Method-1 identifies all possible subgroups that result from simple mode distortions that are associated with a single irreducible representation. Method-4 is more useful in that it finds the mode decomposition of a parent structure to give a specified distorted structure and is set up to find only atom displacement modes. See help pages for [ISODISTORT](https://iso.byu.edu/iso/isodistort.php) for more information. The ultimate product of using ISODISTORT is a special cif file with constraints describing the mode distortions; this is imported into GSAS-II to form a new phase with these constraints.
 
 ### What can I do here?
 
@@ -615,7 +619,7 @@ If this is a phase imported from an ISODISTORT cif file, the mode displacements 
 
 ## Dysnomia
 
-This is displayed if the **Use Dysnomia** box in the General tab is checked. Dysnomia is a maximum entropy method for improving Fourier density maps. The Dysnomia tab gives controls for its operation.
+This is displayed if the **Use Dysnomia** box in the General tab is checked. [Dysnomia](https://doi.org/10.1017/S088571561300002X) is a maximum entropy method for improving Fourier density maps. The Dysnomia tab gives controls for its operation.
 
 ### What can I do here?
 
